@@ -1,10 +1,10 @@
 #Resources (online) to learn&practice SQL
 
 1) Sqlzoo:
-Skill level: Beginer
+Skill level: Beginner
 https://sqlzoo.net/wiki/SQL_Tutorial
 2) Codecademy
-Skill level: Beginer
+Skill level: Beginner
 https://www.codecademy.com/learn/learn-sql
 3) Sqlfiddle:
 Skill level: Intermediate
