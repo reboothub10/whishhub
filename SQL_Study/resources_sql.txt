@@ -13,5 +13,5 @@ https://sqlfiddle.com
 Skill level: Advanced
 https://sqlschool.modeanalytics.com/index.html
 5) SQL Pad
-Skill level: Intermidiate to Advanced
+Skill level: Intermediate to Advanced
 https://sqlpad.io
