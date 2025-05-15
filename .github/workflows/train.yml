@@ -2,9 +2,10 @@ name: Train Wishlist Model
 
 on:
   push:
-    branches: [ "**" ]
-  pull_request:
-    branches: [ "**" ]
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   train-model:
