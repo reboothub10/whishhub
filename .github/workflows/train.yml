@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    
+
 permissions:
   contents: write
 
@@ -36,8 +36,10 @@ jobs:
 
       - name: Commit trained artifacts
         run: |
+          run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+          git checkout ${{ github.head_ref }}
           git add analytics/data/wishlist_sample.csv analytics/models/*.pkl
-          git commit -m "🤖 Auto: update dataset and model on push" || echo "Nothing to commit"
-          git push
+          git commit -m "🤖 Auto: update dataset and model on PR push" || echo "No changes"
+          git push origin ${{ github.head_ref }}
