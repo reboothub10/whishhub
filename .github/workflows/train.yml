@@ -36,7 +36,6 @@ jobs:
 
       - name: Commit trained artifacts
         run: |
-          run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git checkout ${{ github.head_ref }}
