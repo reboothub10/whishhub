@@ -9,8 +9,9 @@ import os
 def train_model(data_path="analytics/data/wishlist_sample.csv", model_dir="analytics/models/"):
     # 1. Завантаження
     df = pd.read_csv(data_path)
-    X = df[["gift"]]
-    y = df["group"]
+
+    X = df[["group"]]
+    y = df["gift"]
 
     # 2. Encoding
     encoder = OneHotEncoder(sparse_output=False)
@@ -30,7 +31,7 @@ def train_model(data_path="analytics/data/wishlist_sample.csv", model_dir="analy
     os.makedirs(model_dir, exist_ok=True)
     joblib.dump(model, os.path.join(model_dir, "wishlist_model.pkl"))
     joblib.dump(encoder, os.path.join(model_dir, "encoder.pkl"))
-    print("✅ Model and encoder saved to", model_dir)
+    #print("✅ Model and encoder saved to", model_dir)
 
 if __name__ == "__main__":
     train_model()

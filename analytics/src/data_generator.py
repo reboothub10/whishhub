@@ -12,6 +12,9 @@ def generate_wishlist_dataset(num_users=100, output_file="analytics/data/wishlis
         "Board Game", "Wine Glass Set", "Bluetooth Speaker", "Gift Card", 
         "Indoor Plant", "Photo Frame"
     ]
+    gender_user = ["Female", "Male"]
+    industry_user = ["Tech", 'Education', "Finance", "Healthcare", "Art", "Retail"]
+
 
     data = []
     for user_id in range(1, num_users + 1):
@@ -19,12 +22,18 @@ def generate_wishlist_dataset(num_users=100, output_file="analytics/data/wishlis
         group = random.choice(event_groups)
         gift = random.choice(gift_ideas)
         link = f"https://fakeshop.com/product/{gift.replace(' ', '_').lower()}"
+        age = random.randint(18, 65)
+        gender = random.choice(gender_user)
+        industry = random.choice(industry_user)
         data.append({
             "user_id": user_id,
             "user_name": full_name,
             "group": group,
             "gift": gift,
-            "link": link
+            "link": link,
+            "gender": gender,
+            "industry": industry,
+            "age": age
         })
 
     df = pd.DataFrame(data)
