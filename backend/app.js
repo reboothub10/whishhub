@@ -1,10 +1,10 @@
 // app.js
 import express from 'express';
-import userRoutes from './routes/userRoutes.js';
-import { checkConnection } from './config/db.js';
-import createAllTable from './utils/dbUtils.js';
-import authRoutes from './routes/authRoutes.js';
-import wishRoutes from './routes/wishRoutes.js';
+import userRoutes from './src/routes/user.routes.js';
+import { checkConnection } from './src/config/db.js';
+import createAllTable from './src/utils/dbUtils.js';
+import authRoutes from './src/routes/auth.routes.js';
+import wishRoutes from './src/routes/wish.routes.js';
 import cors from 'cors'
 
 const app = express();

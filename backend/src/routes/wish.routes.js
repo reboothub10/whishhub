@@ -1,6 +1,6 @@
 // routes/userRoutes.js
 import express from 'express';
-import { getWishList, createWish, deleteWish } from '../controllers/wishController.js';
+import { getWishList, createWish, deleteWish } from '../controllers/wish.controller.js';
 
 const router = express.Router();
 

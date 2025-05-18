@@ -1,6 +1,6 @@
 // controllers/authController.js
-import UserModel from '../models/userModel.js';
-import { registerUser, loginUser, getUserFromToken } from '../services/authService.js';
+import UserModel from '../models/user.model.js';
+import { registerUser, loginUser, getUserFromToken } from '../services/auth.service.js';
 
 export const register = async (req, res) => {
     const { username, email, mobile, password, userType } = req.body;
@@ -59,7 +59,6 @@ export const login = async (req, res) => {
 export const getUserDetails = async (req, res) => {
     
     const token = req.headers.authorization?.split(' ')[1]; // Extract the token from the Authorization header
-    console.log(token);
 
     if (!token) {
         return res.status(401).json({ success: false, message: 'Token not provided' });

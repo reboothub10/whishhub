@@ -1,7 +1,7 @@
 import 'dotenv/config.js';
 import jwt from 'jsonwebtoken';
-import { addWish, listWish, getUserFromToken } from '../services/authService.js';
-import WishModel from '../models/wishModel.js';
+import { addWish, listWish } from '../services/wish.service.js';
+import WishModel from '../models/wish.model.js';
 //getWishList, createWish, deleteWish
 const wishlist = []; // Array to store user data
 
@@ -44,8 +44,6 @@ export const createWish = async (req, res) => {
   const user_id = decoded.id; 
     
   const wish = new WishModel({ title, content, user_id});
-  
-  console.log("Wish created:", wish);
 
   wishlist.push(wish); // Add the new user to the array
   const response = await addWish(wish);
@@ -68,8 +66,6 @@ export const deleteWish = (req, res) => {
   console.log("Deleteing wish");
   console.log(req.body);
   const { title, content, user_id } = req.body;
-  
-  
   
   res.status(201).json({ message: 'Wish added successfully', wish: newWish });
 };

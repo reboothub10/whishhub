@@ -1,0 +1,35 @@
+import { pool } from "../config/db.js";
+import jwt from 'jsonwebtoken';
+import 'dotenv/config.js';
+
+export const addWish = async (wish) => {
+    try {
+        const query = `INSERT INTO wishes (user_id, title, content) VALUES (?, ?, ?)`;
+        const values = [wish.user_id, wish.title, wish.content];
+
+        await pool.query(query, values);
+        return { success: true, message: 'New Wish added successfully' };
+    } catch (error) {
+        console.error("Adding error:", error);
+        return { success: false, message: 'Addition failed. Please try again later.' };
+    }
+};
+
+export const listWish = async (token) => {
+    try {
+        const trimmedToken = token.trim();
+        // Verify token (no `await` needed here)
+        const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
+
+        // Retrieve user details from the database
+        const [rows] = await pool.query('SELECT id, user_id, title, content FROM wishes WHERE user_id = ?', [decoded.id]);
+        if (rows.length === 0) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, wishlist: rows };
+
+    } catch (error) {
+        console.error("Token verification error:", error);
+        return { success: false, message: 'Invalid or expired token' };
+    }
+};
