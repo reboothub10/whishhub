@@ -16,7 +16,6 @@ function Wishlist() {
     try {
       // Retrieve token from localStorage or other secure storage
       const token = sessionStorage.getItem("authToken"); // Replace with actual token retrieval
-      console.log(token);
 
       if (!token) {
         navigate('/login')
@@ -33,10 +32,7 @@ function Wishlist() {
         }
       );
 
-      console.log(response);
-
       if (response.data.success) {
-        console.log(response.data.user);
         setUserData(response.data.user);
         let userInfo={
             isLoggedIn:true,

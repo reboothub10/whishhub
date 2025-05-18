@@ -20,8 +20,6 @@ const Header = () => {
 
   const getData=async()=>{
     const data =await JSON.parse(sessionStorage.getItem('userData'));
-    console.log('useeffct run');
-    
     if (data && data.isLoggedIn) {
       setUserData(data.userData);
     }

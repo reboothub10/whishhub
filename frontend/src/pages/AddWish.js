@@ -16,7 +16,6 @@ const AddWish = () => {
       try {
         // Retrieve token from localStorage or other secure storage
         const token = sessionStorage.getItem("authToken"); // Replace with actual token retrieval
-        console.log(token);
   
         if (!token) {
           // setError('User is not logged in');

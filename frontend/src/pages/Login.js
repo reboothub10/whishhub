@@ -42,12 +42,10 @@ const Login = () => {
       });
 
       if (response.data.success) {
-        console.log(response);
-        
+
         toast.success("Login successful!");
         // Redirect or save token as needed
         const token = response.data.token;
-        console.log(token);
         
         sessionStorage.setItem("authToken", token);
         navigate('/wishlist')
@@ -70,7 +68,7 @@ const Login = () => {
     try {
       // Retrieve token from localStorage or other secure storage
       const token = sessionStorage.getItem('authToken'); // Replace with actual token retrieval
-      console.log(token);
+
       
       if (!token) {
         // setError('User is not logged in');
@@ -83,8 +81,6 @@ const Login = () => {
           Authorization: `Bearer ${token}`
         }
       });
-
-      console.log(response);
       
       if (response.data.success) {
         console.log(response.data.user);

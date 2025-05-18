@@ -40,7 +40,6 @@ return errors;
 
   const handleSubmit=async (e)=>{
     e.preventDefault();
-    console.log(formValues);
     
     const errors=validateForm();
     console.log(errors);

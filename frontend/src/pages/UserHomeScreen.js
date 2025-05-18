@@ -13,7 +13,6 @@ function UserHomeScreen() {
     try {
       // Retrieve token from localStorage or other secure storage
       const token = sessionStorage.getItem("authToken"); // Replace with actual token retrieval
-      console.log(token);
 
       if (!token) {
         // setError('User is not logged in');
@@ -30,10 +29,7 @@ function UserHomeScreen() {
         }
       );
 
-      console.log(response);
-
       if (response.data.success) {
-        console.log(response.data.user);
         setUserData(response.data.user);
         let userInfo={
             isLoggedIn:true,
