@@ -1,0 +1,115 @@
+// services/userService.js
+import { pool } from "../config/db.js";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config.js';
+
+// Register User
+export const registerUser = async (user) => {
+    try {
+        const [existingUser] = await pool.query('SELECT * FROM users WHERE email = ?', [user.email]);
+        if (existingUser.length > 0) {
+            return { success: false, message: 'User already exists' };
+        }
+        
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        const query = `INSERT INTO users (name, email, mobile, password, userType) VALUES (?, ?, ?, ?,?)`;
+        const values = [user.username, user.email, user.mobile, hashedPassword,user.userType];
+        await pool.query(query, values);
+        return { success: true, message: 'User registered successfully' };
+    } catch (error) {
+        console.error("Registration error:", error);
+        return { success: false, message: 'Registration failed. Please try again later.' };
+    }
+};
+
+// Login User with JWT token
+export const loginUser = async (email, password) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length === 0) {
+            return { success: false, message: 'User not found' };
+        }
+        
+        const user = rows[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        
+        if (!passwordMatch) {
+            return { success: false, message: 'Incorrect password' };
+        }
+        
+        // Generate JWT token
+        const token = jwt.sign(
+            { id: user.id, email: user.email, userType:user.userType },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        
+        return { 
+            success: true, 
+            message: 'Login successful', 
+            token, 
+            user: { id: user.id, email: user.email, userType:user.userType } 
+        };
+    } catch (error) {
+        console.error("Login error:", error);
+        return { success: false, message: 'Login failed. Please try again later.' };
+    }
+};
+
+// Get User Details from Token
+export const getUserFromToken = async (token) => {
+    try {
+        const trimmedToken = token.trim();
+        console.log("Received token:", trimmedToken);
+
+        // Verify token (no `await` needed here)
+        const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
+        console.log("Decoded token:", decoded);
+
+        // Retrieve user details from the database
+        const [rows] = await pool.query('SELECT id, name, email, mobile, userType FROM users WHERE id = ?', [decoded.id]);
+
+        if (rows.length === 0) {
+            return { success: false, message: 'User not found' };
+        }
+
+        const user = rows[0];
+        return { success: true, user };
+    } catch (error) {
+        console.error("Token verification error:", error);
+        return { success: false, message: 'Invalid or expired token' };
+    }
+};
+
+export const addWish = async (wish) => {
+    try {
+        const query = `INSERT INTO wishes (user_id, title, content) VALUES (?, ?, ?)`;
+        const values = [wish.user_id, wish.title, wish.content];
+
+        await pool.query(query, values);
+        return { success: true, message: 'New Wish added successfully' };
+    } catch (error) {
+        console.error("Adding error:", error);
+        return { success: false, message: 'Addition failed. Please try again later.' };
+    }
+};
+
+export const listWish = async (token) => {
+    try {
+        const trimmedToken = token.trim();
+        // Verify token (no `await` needed here)
+        const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
+
+        // Retrieve user details from the database
+        const [rows] = await pool.query('SELECT id, user_id, title, content FROM wishes WHERE user_id = ?', [decoded.id]);
+        if (rows.length === 0) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, wishlist: rows };
+
+    } catch (error) {
+        console.error("Token verification error:", error);
+        return { success: false, message: 'Invalid or expired token' };
+    }
+};
