@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../config/api";
 import Header from "../components/Header";
 
 
@@ -20,8 +20,8 @@ function UserHomeScreen() {
       }
 
       // Make the API request with the token in the Authorization header
-      const response = await axios.get(
-        "http://localhost:3000/api/auth/get-userDetails",
+      const response = await api.get(
+        "/api/auth/get-userDetails",
         {
           headers: {
             Authorization: `Bearer ${token}`,

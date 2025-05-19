@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import api from "../config/api";
 import Header from "../components/Header";
 
 
@@ -23,8 +23,8 @@ function Wishlist() {
       }
 
       // Make the API request with the token in the Authorization header
-      const response = await axios.get(
-        "http://localhost:3001/api/auth/get-userDetails",
+      const response = await api.get(
+        "/api/auth/get-userDetails",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,8 +44,8 @@ function Wishlist() {
       }
 
        // Make the API request with the token in the Authorization header to get list of wishes
-       const wishresponse = await axios.get(
-        "http://localhost:3001/api/wish/list",
+       const wishresponse = await api.get(
+        "/api/wish/list",
         {
           headers: {
             Authorization: `Bearer ${token}`,

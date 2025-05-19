@@ -1,8 +1,9 @@
-import axios from "axios";
+import api from "../config/api";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import UserModel from "../model/userModel";
+
 
 const SignUp = () => {
   const [formValues, setFormValues] = useState(new UserModel({}));
@@ -50,7 +51,7 @@ return errors;
       setFormErrors(errors);
     }
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/register-user", formValues);
+      const response = await api.post("/api/auth/register-user", formValues);
       console.log(response, 'res');
 
       if (response.data.success) {

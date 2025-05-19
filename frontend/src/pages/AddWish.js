@@ -1,7 +1,8 @@
-import axios from "axios";
+import api from "../config/api";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 
 const AddWish = () => {
   const [title, setTitle] = useState("");
@@ -44,7 +45,7 @@ const AddWish = () => {
     const token = sessionStorage.getItem("authToken");
     try {
       // Make API request to login
-      const response = await axios.post("http://localhost:3001/api/wish/add", {
+      const response = await api.post("/api/wish/add", {
         title,
         content,
       },
@@ -84,7 +85,7 @@ const AddWish = () => {
         </div>
         <div className="form-group">
           <label>Description</label>
-          <textarea name="content" onChange={(e) => setContent(e.target.value)}>{content}</textarea>
+          <textarea name="content" onChange={(e) => setContent(e.target.value)} style={{width:'100%'}} >{content}</textarea>
           {errors.content && <span className="error-message">{errors.content}</span>}
         </div>
         <button type="submit" className="login-btn">

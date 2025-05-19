@@ -1,7 +1,9 @@
-import axios from "axios";
+import api from "../config/api";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+console.log('API URL:', process.env.REACT_APP_API_BASE_URL);
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,7 +38,7 @@ const Login = () => {
 
     try {
       // Make API request to login
-      const response = await axios.post("http://localhost:3001/api/auth/login", {
+      const response = await api.post("/api/auth/login", {
         email,
         password,
       });
@@ -76,7 +78,7 @@ const Login = () => {
       }
 
       // Make the API request with the token in the Authorization header
-      const response = await axios.get('http://localhost:3001/api/auth/get-userDetails', {
+      const response = await api.get('/api/auth/get-userDetails', {
         headers: {
           Authorization: `Bearer ${token}`
         }
