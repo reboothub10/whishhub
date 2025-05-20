@@ -14,10 +14,10 @@ const SignUp = () => {
     const errors = {};
 
     if (!formValues.username) {
-      errors.username = "Username is required";
+      errors.username = "Name is required";
     } else if (!/^[A-Za-z0-9_]{3,15}$/.test(formValues.username)) {
       errors.username =
-        "Username should be 3-15 characters long and can only contain letters, numbers, and underscores.';";
+        "Name should be 3-15 characters long and can only contain letters, numbers, and underscores.';";
     }
 
     if(!formValues.email){
@@ -25,11 +25,11 @@ errors.email="Email is required"
     }else if(!/\S+@\S+\.\S+/.test(formValues.email)){
       errors.email="Please enter a valid email address"
     }
-    if (!formValues.mobile) {
-      errors.mobile = 'Mobile number is required';
-    } else if (!/^\d{10}$/.test(formValues.mobile)) {
-      errors.mobile = 'Mobile number should be 10 digits';
-    }
+    // if (!formValues.mobile) {
+    //   errors.mobile = 'Mobile number is required';
+    // } else if (!/^\d{10}$/.test(formValues.mobile)) {
+    //   errors.mobile = 'Mobile number should be 10 digits';
+    // }
 
     if (!formValues.password) {
       errors.password = 'Password is required';
@@ -80,7 +80,7 @@ return errors;
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Username</label>
+          <label>Name</label>
           <input
             type="text"
             placeholder="Enter your username"

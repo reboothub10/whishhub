@@ -50,8 +50,9 @@ const Login = () => {
         const token = response.data.token;
         
         sessionStorage.setItem("authToken", token);
-        navigate('/wishlist')
         fetchUserDetails();
+        navigate('/wishlist')
+        
       } else {
         toast.error(response.data.message || "Login failed");
       }
@@ -86,6 +87,15 @@ const Login = () => {
       
       if (response.data.success) {
         console.log(response.data.user);
+
+
+        let userInfo={
+            isLoggedIn:true,
+            userData:response.data.user
+        }
+        sessionStorage.setItem('userData',JSON.stringify(userInfo));
+
+
       } else {
         console.log(response.data.message || 'Failed to fetch user details');
       }
