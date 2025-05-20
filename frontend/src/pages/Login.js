@@ -50,7 +50,13 @@ const Login = () => {
         const token = response.data.token;
         
         sessionStorage.setItem("authToken", token);
-        fetchUserDetails();
+
+        let userInfo={
+          isLoggedIn:true,
+          userData:response.data.user
+        }
+        sessionStorage.setItem('userData',JSON.stringify(userInfo));
+
         navigate('/wishlist')
         
       } else {
@@ -62,50 +68,6 @@ const Login = () => {
     }
   };
 
- 
-
-  // useEffect(() => {
-    
-  // }, []);
-  const fetchUserDetails = async () => {
-    try {
-      // Retrieve token from localStorage or other secure storage
-      const token = sessionStorage.getItem('authToken'); // Replace with actual token retrieval
-
-      
-      if (!token) {
-        // setError('User is not logged in');
-        return;
-      }
-
-      // Make the API request with the token in the Authorization header
-      const response = await api.get('/api/auth/get-userDetails', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      
-      if (response.data.success) {
-        console.log(response.data.user);
-
-
-        let userInfo={
-            isLoggedIn:true,
-            userData:response.data.user
-        }
-        sessionStorage.setItem('userData',JSON.stringify(userInfo));
-
-
-      } else {
-        console.log(response.data.message || 'Failed to fetch user details');
-      }
-    } catch (err) {
-      console.error('Error fetching user details:', err);
-      console.log(err.response?.data?.message || 'An error occurred');
-    }
-  };
-
-  // fetchUserDetails();
 
   return (
     <div className="login-container">
