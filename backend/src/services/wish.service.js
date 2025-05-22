@@ -4,8 +4,8 @@ import 'dotenv/config.js';
 
 export const addWish = async (wish) => {
     try {
-        const query = `INSERT INTO wish (user_id, title, content) VALUES (?, ?, ?)`;
-        const values = [wish.user_id, wish.title, wish.content];
+        const query = `INSERT INTO wish (user_id, title, content, wishgroup_id) VALUES (?, ?, ?, ?)`;
+        const values = [wish.user_id, wish.title, wish.content, wish.wishgroup_id];
 
         await pool.query(query, values);
         return { success: true, message: 'New Wish added successfully' };
@@ -22,7 +22,7 @@ export const listWish = async (token) => {
         const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
 
         // Retrieve user details from the database
-        const [rows] = await pool.query('SELECT id, user_id, title, content FROM wish WHERE user_id = ?', [decoded.id]);
+        const [rows] = await pool.query('SELECT id, user_id, title, content, wishgroup_id FROM wish WHERE user_id = ?', [decoded.id]);
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };
         }
