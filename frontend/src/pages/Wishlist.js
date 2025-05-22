@@ -13,14 +13,17 @@ import {
   CardMedia,
   Paper,
   Link,
+  CircularProgress,
 } from '@mui/material';
+
 
 
 function Wishlist() {
   const [userData, setUserData] = useState("");
-  const [wishdata, setWishData] = useState("");
+  const [data, setWishData] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate=useNavigate();
+  const isLoading = data === null;
 
   useEffect(() => {
     fetchUserDetails();
@@ -76,7 +79,7 @@ function Wishlist() {
             data[category] = [];
           }
           data[category].push({name: wish.wishName,
-            url: wish.url});
+            url: wish.wishUrl	});
         });
 
         console.log("Wish data:", data);
@@ -94,59 +97,77 @@ function Wishlist() {
   };
   return (
 
-    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 5, p: 3 }}>
-    <Typography variant="h4" gutterBottom>
-      {wishdata != [] ? 'Select Wishlist Category' : "No Wishlist Found."}
-    </Typography>
-
-    <Stack direction="row" spacing={2} flexWrap="wrap" mb={3}>
-      {Object.keys(wishdata).map((category) => (
-        <Button
-          key={category}
-          variant={selectedCategory === category ? 'contained' : 'outlined'}
-          onClick={() => setSelectedCategory(category)}
-          sx={{
-            backgroundColor: selectedCategory === category ? 'black' : 'transparent',
-            color: selectedCategory === category ? 'white' : 'black',
-            borderColor: 'black',
-            '&:hover': {
-              backgroundColor: '#333',
-              color: 'white',
-            },
-          }}
-        >
-          {category}
-        </Button>
-      ))}
-    </Stack>
-
-    {selectedCategory && (
-      <Paper elevation={3} sx={{ p: 2 }}>
-
-        <Grid container spacing={2}>
-          {wishdata[selectedCategory].map((item, idx) => (
-            <Grid item xs={12} sm={6} md={4} key={idx}>
-              <Card sx={{ height: '100%' }}>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image='/images/preview.jpg'
-                  alt={item.name}
-                  sx={{ objectFit: 'contain'}}
-                />
-                <CardContent>
-                  <Typography variant="h6">{item.name}</Typography>
-                  <Link href={item.url} target="_blank" rel="noopener noreferrer">
-                    {item.url}
-                  </Link>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+    <Box sx={{ flexGrow: 1, p: 4 }}>
+      <Grid container spacing={4}>
+        {/* Left Sidebar */}
+        <Grid item xs={12} sm={4} md={3}>
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Categories
+            </Typography>
+            <Stack spacing={1}>
+              {isLoading && <CircularProgress />}
+              {!isLoading &&
+                Object.keys(data).map((category) => (
+                  <Button
+                    key={category}
+                    fullWidth
+                    variant={selectedCategory === category ? 'contained' : 'outlined'}
+                    onClick={() => setSelectedCategory(category)}
+                    sx={{
+                      justifyContent: 'flex-start',
+                      backgroundColor: selectedCategory === category ? 'black' : 'transparent',
+                      color: selectedCategory === category ? 'white' : 'black',
+                      borderColor: 'black',
+                      '&:hover': {
+                        backgroundColor: '#333',
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    {category}
+                  </Button>
+                ))}
+            </Stack>
+          </Paper>
         </Grid>
-      </Paper>
-    )}
-  </Box>
+
+        {/* Right Content Area */}
+        <Grid item xs={12} sm={8} md={9}>
+          {!selectedCategory && (
+            <Typography variant="h6" color="textSecondary">
+              Please select a category to see items.
+            </Typography>
+          )}
+
+          {selectedCategory && data && data[selectedCategory] && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                {selectedCategory}
+              </Typography>
+              <Grid container spacing={2}>
+                {data[selectedCategory].map((item, idx) => (
+                  <Grid item xs={12} sm={6} md={4} key={idx}>
+                    <Card sx={{ height: '100%' }}>
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image='images/preview.jpg'
+                        alt={item.name}
+                        sx={{ objectFit: 'contain'}}
+                      />
+                      <CardContent>
+                        <Link href={item.url} target="_blank"><Typography variant="h6">{item.name}</Typography></Link>                        
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </>
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 
