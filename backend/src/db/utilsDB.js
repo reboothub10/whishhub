@@ -1,6 +1,6 @@
 import { pool } from "./config.js";
 
-const userTableQuery = `CREATE TABLE IF NOT EXISTS user (
+const userTableQuery = `CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
