@@ -14,9 +14,8 @@ permissions:
   contents: write
 
 jobs:
-  train-model:
+  test-predictor:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -32,16 +31,5 @@ jobs:
           pip install -r requirements.txt
           pip install faker joblib scikit-learn pandas
 
-      - name: Train model
-        run: python analytics/src/model_trainer.py
-
       - name: Test gift predictor
         run: python analytics/src/gift_predictor.py
-
-      - name: Commit trained model and encoder
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add analytics/models/*.pkl
-          git commit -m "Auto: update model on data change" || echo "No changes to commit"
-          git push
