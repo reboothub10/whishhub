@@ -1,4 +1,4 @@
-import { pool } from "../config/db.js";
+import { pool } from "../db/config.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
@@ -6,14 +6,15 @@ import 'dotenv/config.js';
 // Register User
 export const registerUser = async (user) => {
     try {
-        const [existingUser] = await pool.query('SELECT * FROM users WHERE email = ?', [user.email]);
+        const [existingUser] = await pool.query('SELECT * FROM user WHERE email = ?', [user.email]);
         if (existingUser.length > 0) {
             return { success: false, message: 'User already exists' };
         }
         
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        const query = `INSERT INTO users (name, email, mobile, password, userType) VALUES (?, ?, ?, ?,?)`;
-        const values = [user.username, user.email, user.mobile, hashedPassword,user.userType];
+        const query = `INSERT INTO user (name, email, age_group, password, userType, gender, industry) VALUES (?, ?, ?, ?,?,?,?)`;
+        const values = [user.username, user.email, user.age_group, hashedPassword, user.userType, user.gender, user.industry];
+
         await pool.query(query, values);
         return { success: true, message: 'User registered successfully' };
     } catch (error) {
@@ -25,7 +26,7 @@ export const registerUser = async (user) => {
 // Login User with JWT token
 export const loginUser = async (email, password) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        const [rows] = await pool.query('SELECT * FROM user WHERE email = ?', [email]);
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };
         }
@@ -64,7 +65,7 @@ export const getUserFromToken = async (token) => {
         const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
 
         // Retrieve user details from the database
-        const [rows] = await pool.query('SELECT id, name, email, mobile, userType FROM users WHERE id = ?', [decoded.id]);
+        const [rows] = await pool.query('SELECT id, name, email, userType FROM user WHERE id = ?', [decoded.id]);
 
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };

@@ -1,8 +1,8 @@
 // app.js
 import express from 'express';
 import userRoutes from './src/routes/user.routes.js';
-import { checkConnection } from './src/config/db.js';
-import createAllTable from './src/utils/dbUtils.js';
+import { checkConnection } from './src/db/config.js';
+import createAllTable from './src/db/utilsDB.js';
 import authRoutes from './src/routes/auth.routes.js';
 import wishRoutes from './src/routes/wish.routes.js';
 import cors from 'cors'

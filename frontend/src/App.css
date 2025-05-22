@@ -145,6 +145,15 @@
   font-size: 16px; /* Increased input font size */
 }
 
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px; /* Increased input font size */
+}
+
 .login-btn {
   width: 100%;
   padding: 10px;

@@ -1,13 +1,13 @@
 import api from "../config/api";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import UserModel from "../model/userModel";
 
 
 const SignUp = () => {
+  const navigate=useNavigate();
   const [formValues, setFormValues] = useState(new UserModel({}));
-
   const [formErrors, setFormErrors] = useState({});
 
   const validateForm = () => {
@@ -21,15 +21,11 @@ const SignUp = () => {
     }
 
     if(!formValues.email){
-errors.email="Email is required"
+      errors.email="Email is required"
     }else if(!/\S+@\S+\.\S+/.test(formValues.email)){
       errors.email="Please enter a valid email address"
     }
-    // if (!formValues.mobile) {
-    //   errors.mobile = 'Mobile number is required';
-    // } else if (!/^\d{10}$/.test(formValues.mobile)) {
-    //   errors.mobile = 'Mobile number should be 10 digits';
-    // }
+
 
     if (!formValues.password) {
       errors.password = 'Password is required';
@@ -51,18 +47,22 @@ return errors;
       setFormErrors(errors);
     }
     try {
-      const response = await api.post("/api/auth/register-user", formValues);
+      const response = await api.post("/api/auth/register", formValues);
       console.log(response, 'res');
 
       if (response.data.success) {
           toast.success(response.data.message || 'Registration successful!');
-          setFormValues({username:"",email:"",mobile:"",password:""});
+          setFormValues({username:"",email:"",password:""});
           setFormErrors("");
+          navigate('/login');
+
       } else {
+          setFormErrors("");
           toast.error(response.data.message || 'Registration failed!');
       }
   } catch (error) {
       console.error('Error during registration:', error);
+      setFormErrors("");
       toast.error(error.response.data.message || "Something went wrong. Please try again later.");
   }
     
@@ -103,16 +103,52 @@ return errors;
           {formErrors.email?<span className="error-message">{formErrors.email}</span>:''} 
         </div>
         <div className="form-group">
-          <label>Mobile No</label>
-          <input
-            type="tel"
-            name="mobile"
-            placeholder="Enter your mobile number"
-            value={formValues.mobile}
-            onChange={handleInputChange}
-          />
-          {formErrors.mobile?<span className="error-message">{formErrors.mobile}</span>:''} 
+          <label>Gender</label>
+            <select name="gender" onChange={handleInputChange}>
+                <option value="male">Male</option>
+                <option value="female" selected>Female</option>
+                <option value="non_binary">Non Binary</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
+                <option value="other">Other</option>
+            </select>
         </div>
+        <div className="form-group">
+          <label>Industry</label>
+            <select name="industry" onChange={handleInputChange}>
+                <option value="IT">IT</option>
+                <option value="Finance">Finance</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Education">Education</option>
+                <option value="Retail">Retail</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Construction">Construction</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Telecommunications">Telecommunications</option>
+                <option value="Energy">Energy</option>
+                <option value="Media">Media</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Government">Government</option>
+                <option value="Non-Profit">Non-Profit</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Real Estate">Real Estate</option>
+            </select>
+        </div>
+        <div className="form-group">
+          <label>Age Group</label>
+            <select name="age_group" onChange={handleInputChange}>
+                <option value="18-24">18-24</option>
+                <option value="25-34" selected>25-34</option>
+                <option value="35-44">35-44</option>
+                <option value="45-54">45-54</option>
+                <option value="55-64">55-64</option>
+                <option value="65+">65+</option>
+            </select>
+        </div>
+
         <div className="form-group">
           <label>Password</label>
           <input
