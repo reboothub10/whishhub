@@ -22,7 +22,7 @@ export const listWish = async (token) => {
         const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
 
         // Retrieve user details from the database
-        const [rows] = await pool.query('SELECT id, user_id, title, content, wishgroup_id FROM wish WHERE user_id = ?', [decoded.id]);
+        const [rows] = await pool.query('SELECT w.id, w.user_id, w.title wishName, w.content wishUrl, wishgroup_id, wg.name wishCategory FROM wish w INNER JOIN wish_group wg on w.wishgroup_id= wg.id WHERE w.user_id  = ?', [decoded.id]);
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };
         }

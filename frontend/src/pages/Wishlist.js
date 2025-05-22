@@ -2,11 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import api from "../config/api";
 import Header from "../components/Header";
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Paper,
+  Link,
+} from '@mui/material';
 
 
 function Wishlist() {
   const [userData, setUserData] = useState("");
-  const [wishlist, setWishlist] = useState([]);
+  const [wishdata, setWishData] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate=useNavigate();
 
   useEffect(() => {
@@ -24,7 +37,7 @@ function Wishlist() {
 
       // Make the API request with the token in the Authorization header
       const response = await api.get(
-        "/api/auth/get-userDetails",
+        "/api/auth/user",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +67,20 @@ function Wishlist() {
       );
 
       if (wishresponse.data.success) {
-        setWishlist(wishresponse.data.wishlist);
+        
+        const data = {};
+        wishresponse.data.wishlist.forEach((wish) => {
+          console.log(wish);
+          const category = wish.wishCategory || "Uncategorized";
+          if (!data[category]) {
+            data[category] = [];
+          }
+          data[category].push({name: wish.wishName,
+            url: wish.url});
+        });
+
+        console.log("Wish data:", data);
+        setWishData(data);
 
       }
       else {
@@ -67,29 +93,60 @@ function Wishlist() {
     }
   };
   return (
-    <div>
-      <h2 style={{ textAlign: "center" }}>Your Wishlist</h2>
-      <div style={{textAlign:'center'}}>
 
-      <ul class="list-group" style={{textAlign:'center',display:'inline-block'}}>
-          {wishlist.length === 0 && <li className="list-group-item">No wishes found</li>}
-          {wishlist &&
-            wishlist.map((wish, index) => (
-              <li class="list-group-item" key={index} style={{textAlign:'center',padding: '10px', margin: '10px', borderRadius: '5px', backgroundColor: '#f9f9f9',
-                border: '1px solid #e2e2e2',
-                display: 'block',
-                border: '1px solid',
-                width: '200px',
-                float: 'left',
-                clear: 'both', cursor: 'pointer'}}> 
-                 <strong><i>{wish.title}</i></strong> <br />
-                 {wish.content} 
-              </li>
-            ))}
-        </ul>
+    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 5, p: 3 }}>
+    <Typography variant="h4" gutterBottom>
+      {wishdata != [] ? 'Select Wishlist Category' : "No Wishlist Found."}
+    </Typography>
 
-      </div>
-    </div>
+    <Stack direction="row" spacing={2} flexWrap="wrap" mb={3}>
+      {Object.keys(wishdata).map((category) => (
+        <Button
+          key={category}
+          variant={selectedCategory === category ? 'contained' : 'outlined'}
+          onClick={() => setSelectedCategory(category)}
+          sx={{
+            backgroundColor: selectedCategory === category ? 'black' : 'transparent',
+            color: selectedCategory === category ? 'white' : 'black',
+            borderColor: 'black',
+            '&:hover': {
+              backgroundColor: '#333',
+              color: 'white',
+            },
+          }}
+        >
+          {category}
+        </Button>
+      ))}
+    </Stack>
+
+    {selectedCategory && (
+      <Paper elevation={3} sx={{ p: 2 }}>
+
+        <Grid container spacing={2}>
+          {wishdata[selectedCategory].map((item, idx) => (
+            <Grid item xs={12} sm={6} md={4} key={idx}>
+              <Card sx={{ height: '100%' }}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image='/images/preview.jpg'
+                  alt={item.name}
+                  sx={{ objectFit: 'contain'}}
+                />
+                <CardContent>
+                  <Typography variant="h6">{item.name}</Typography>
+                  <Link href={item.url} target="_blank" rel="noopener noreferrer">
+                    {item.url}
+                  </Link>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Paper>
+    )}
+  </Box>
   );
 }
 

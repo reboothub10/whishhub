@@ -21,7 +21,7 @@ function UserHomeScreen() {
 
       // Make the API request with the token in the Authorization header
       const response = await api.get(
-        "/api/auth/get-userDetails",
+        "/api/auth/user",
         {
           headers: {
             Authorization: `Bearer ${token}`,
