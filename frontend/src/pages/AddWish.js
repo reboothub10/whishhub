@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 const AddWish = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [wishgroup_id, setWishgroup] = useState(1);
   const [errors, setErrors] = useState({});
   const navigate=useNavigate();
 
@@ -48,6 +49,7 @@ const AddWish = () => {
       const response = await api.post("/api/wish/add", {
         title,
         content,
+        wishgroup_id
       },
       {
         headers: {
@@ -73,6 +75,33 @@ const AddWish = () => {
       <h2>Add New Wish</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+
+          <label>Category</label>
+          <select name="wishgroup_id" onChange={(e) => setWishgroup(e.target.value)}>
+              <option value="1">Default</option>
+              <option value="2">Birthday</option>
+              <option value="3">Birthday For Her</option>
+              <option value="4">Birthday For Him</option>
+              <option value="5">Anniversary</option>
+
+              <option value="6">Wedding</option>
+              <option value="7">Graduation</option>
+              <option value="8">Housewarming</option>
+              <option value="9">Baby Shower</option>
+              <option value="10">Christmas</option>
+
+              <option value="11">New Year</option>
+              <option value="12">Valentine Day</option>
+              <option value="13">Easter</option>
+              <option value="14">Thanksgiving</option>
+              <option value="15">Halloween</option>
+
+              <option value="16">Retirement</option>
+              <option value="17">Promotion</option>
+              <option value="18">Farewell</option>
+          </select>
+        </div>
+        <div className="form-group">
           <label>Title</label>
           <input
             type="text"
@@ -84,8 +113,14 @@ const AddWish = () => {
           {errors.title && <span className="error-message">{errors.title}</span>}
         </div>
         <div className="form-group">
-          <label>Description</label>
-          <textarea name="content" onChange={(e) => setContent(e.target.value)} style={{width:'100%'}} >{content}</textarea>
+          <label>URL</label>
+          <input
+            type="text"
+            name="content"
+            placeholder="Enter your URL"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
           {errors.content && <span className="error-message">{errors.content}</span>}
         </div>
         <button type="submit" className="login-btn">

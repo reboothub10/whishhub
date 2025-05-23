@@ -3,15 +3,15 @@ import UserModel from '../models/user.model.js';
 import { registerUser, loginUser, getUserFromToken } from '../services/auth.service.js';
 
 export const register = async (req, res) => {
-    const { username, email, mobile, password, userType } = req.body;
+    const { username, email, age_group, gender, industry, password, userType } = req.body;
 
     // Validate required fields
-    if (!username || !email || !mobile || !password) {
+    if (!username || !email || !password || !age_group || !gender || !industry) {
         return res.status(400).json({ success: false, message: 'All fields are required' });
     }
 
     // Create user instance
-    const user = new UserModel({ username, email, mobile, password, userType });
+    const user = new UserModel({ username, email, age_group, gender, industry, password, userType });
 
     try {
         // Register user using auth service

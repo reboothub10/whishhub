@@ -5,9 +5,9 @@ import { getUserDetails, login, register } from '../controllers/auth.controller.
 
 const router = express.Router();
 
-router.post('/register-user', register);
+router.post('/register', register);
 router.post('/login', login);
-router.get('/get-userDetails', getUserDetails);
+router.get('/user', getUserDetails);
 
 
 export default router;

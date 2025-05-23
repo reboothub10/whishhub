@@ -1,11 +1,11 @@
-import { pool } from "../config/db.js";
+import { pool } from "../db/config.js";
 import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
 
 export const addWish = async (wish) => {
     try {
-        const query = `INSERT INTO wishes (user_id, title, content) VALUES (?, ?, ?)`;
-        const values = [wish.user_id, wish.title, wish.content];
+        const query = `INSERT INTO wish (user_id, title, content, wishgroup_id) VALUES (?, ?, ?, ?)`;
+        const values = [wish.user_id, wish.title, wish.content, wish.wishgroup_id];
 
         await pool.query(query, values);
         return { success: true, message: 'New Wish added successfully' };
@@ -22,7 +22,7 @@ export const listWish = async (token) => {
         const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
 
         // Retrieve user details from the database
-        const [rows] = await pool.query('SELECT id, user_id, title, content FROM wishes WHERE user_id = ?', [decoded.id]);
+        const [rows] = await pool.query('SELECT w.id, w.user_id, w.title wishName, w.content wishUrl, wishgroup_id, wg.name wishCategory FROM wish w INNER JOIN wish_group wg on w.wishgroup_id= wg.id WHERE w.user_id  = ?', [decoded.id]);
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };
         }

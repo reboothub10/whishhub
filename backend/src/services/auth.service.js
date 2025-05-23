@@ -1,4 +1,4 @@
-import { pool } from "../config/db.js";
+import { pool } from "../db/config.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
@@ -12,8 +12,9 @@ export const registerUser = async (user) => {
         }
         
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        const query = `INSERT INTO users (name, email, mobile, password, userType) VALUES (?, ?, ?, ?,?)`;
-        const values = [user.username, user.email, user.mobile, hashedPassword,user.userType];
+        const query = `INSERT INTO users (name, email, age_group, password, userType, gender, industry) VALUES (?, ?, ?, ?,?,?,?)`;
+        const values = [user.username, user.email, user.age_group, hashedPassword, user.userType, user.gender, user.industry];
+
         await pool.query(query, values);
         return { success: true, message: 'User registered successfully' };
     } catch (error) {
@@ -64,7 +65,7 @@ export const getUserFromToken = async (token) => {
         const decoded = jwt.verify(trimmedToken, process.env.JWT_SECRET);
 
         // Retrieve user details from the database
-        const [rows] = await pool.query('SELECT id, name, email, mobile, userType FROM users WHERE id = ?', [decoded.id]);
+        const [rows] = await pool.query('SELECT id, name, email, userType FROM users WHERE id = ?', [decoded.id]);
 
         if (rows.length === 0) {
             return { success: false, message: 'User not found' };

@@ -25,7 +25,7 @@ export const getWishList = async (req, res) => {
 
 // Function to create a new wish
 export const createWish = async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, wishgroup_id } = req.body;
   if (!title) {
     return res.status(400).json({ message: 'Wish Name is required' });
   }
@@ -41,11 +41,10 @@ export const createWish = async (req, res) => {
  
   if (decoded) {
 
-  const user_id = decoded.id; 
-    
-  const wish = new WishModel({ title, content, user_id});
+    const user_id = decoded.id; 
+    const wish = new WishModel({ title, content, user_id, wishgroup_id});
 
-  wishlist.push(wish); // Add the new user to the array
+  wishlist.push(wish);
   const response = await addWish(wish);
       
     if (response.success) {
