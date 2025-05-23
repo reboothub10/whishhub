@@ -10,15 +10,11 @@ permissions:
   contents: write
 
 jobs:
-  train-model:
+  test-predictor:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,17 +27,5 @@ jobs:
           pip install -r requirements.txt
           pip install faker joblib scikit-learn pandas
 
-      - name: Run data generator
-        run: python analytics/src/data_generator.py
-
-      - name: Train model
-        run: python analytics/src/model_trainer.py
-
-      - name: Commit trained artifacts
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout ${{ github.head_ref }}
-          git add analytics/data/wishlist_sample.csv analytics/models/*.pkl
-          git commit -m "🤖 Auto: update dataset and model on PR push" || echo "No changes"
-          git push origin ${{ github.head_ref }}
+      - name: Test gift predictor
+        run: python analytics/src/gift_predictor.py

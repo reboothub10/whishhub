@@ -10,7 +10,7 @@ def train_model(data_path="analytics/data/wishlist_sample.csv", model_dir="analy
     # 1. Завантаження
     df = pd.read_csv(data_path)
 
-    X = df[["group"]]
+    X = df[["group", "gender", "age", "industry"]]
     y = df["gift"]
 
     # 2. Encoding
