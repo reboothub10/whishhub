@@ -74,12 +74,12 @@ function Wishlist() {
         const data = {};
         wishresponse.data.wishlist.forEach((wish) => {
           console.log(wish);
-          const category = wish.wishCategory || "Uncategorized";
+          const category = wish.wishgroup_name || "Uncategorized";
           if (!data[category]) {
             data[category] = [];
           }
-          data[category].push({name: wish.wishName,
-            url: wish.wishUrl	});
+          data[category].push({name: wish.name,
+            url: wish.url	});
         });
 
         console.log("Wish data:", data);

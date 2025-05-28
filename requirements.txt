@@ -1,3 +1,9 @@
+python-dotenv
+flask
+flask-jwt-extended
+flask-restx
+flask-sqlalchemy
+pyjwt
 pandas
 scikit-learn
 numpy

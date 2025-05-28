@@ -26,34 +26,59 @@ Built with **Node.js**, **Express**, **MySQL**, and **React**.
 - [Node.js](https://nodejs.org/) (v16+ recommended)
 - [npm](https://www.npmjs.com/)
 - [MySQL](https://www.mysql.com/) server
+- [Python3] 
 
 ---
 
 ## Setup Instructions
 
-
-Create a .env file in the backend/ folder:
-
-```bash
-DB_HOST=localhost
-DB_USER=<your_mysql_user>
-DB_PASSWORD=<your_mysql_password>
-DB_NAME=wishlist_app
-JWT_SECRET=your_secret_key
-```
-
-Clone the Repository
+###Clone the Repository
 
 ```bash
 git clone https://github.com/reboothub10/whishhub.git
 cd whishhub
-cd backend
-npm install
-node app.js
+```
+
+### Installation
+
+To install the necessary dependencies for this project, run the following command:
+
+```
+pip3 install -r requirements.txt
+```
+
+This will install all the necessary libraries and modules, including Flask, SQLAlchemy, and JWT Auth.
+
+### DB connection
+
+Create a .env file in root folder:
+
+```bash
+MYSQL_HOST=localhost
+MYSQL_USERNAME=<your_mysql_user>
+MYSQL_PASSWORD=<your_mysql_password>
+MYSQL_PORT = <port>
+DB_NAME=<db_name>
+JWT_SECRET_KEY=your_secret_key
+```
+
+### Run backend
+
+```
+flask run
+```
+
+This will start the Flask development server and allow you to access the API from your local machine.
+
+### Run frontend
+
+```
 cd ../frontend
 npm install
 npm run start
 ```
+
+
 ---
 ## Design files
 Please find all the Figma screenshots here: https://drive.google.com/drive/folders/1bb7CD5y4-xs_jlWBU-Wv5XUPvrUVvYFM?usp=drive_link
