@@ -8,7 +8,8 @@ from app import db, app, database_space, user_space, wish_space
 from models import User, Wish, WishGroup
 from flask_restx import Resource
 from flask import Response
-
+from analytics.src.gift_predictor import predict_gifts
+import pandas as pd
 
 @app.route('/swagger')
 def swagger_ui():
@@ -31,6 +32,48 @@ def get_user_id_from_token():
         except:
             return
     return
+
+def get_recommendations(group, user):
+
+    input_data = pd.DataFrame([{"group": group, "gender": user.gender, "age": average_age_range(user.age_group), "industry": user.industry}])
+
+    logging.error(f"Input data for prediction: {input_data}")
+    try:
+        results = predict_gifts(
+            model_path="analytics/models/wishlist_model.pkl",
+            encoder_path="analytics/models/encoder.pkl",
+            user_input_df=input_data
+        )
+        logging.error(f"Results from prediction: {results}")
+        return results[0];
+
+    except Exception as e:
+        logging.error(f"Error in get_recommendations:")
+        print(f"Error: {e}")
+        # Fallback recommendations if prediction fails
+        return ["Gift Card", "Indoor Plant", "Smart Watch"]
+
+    
+    
+def average_age_range(age_range_str):
+    if '+' in age_range_str:
+        return int(age_range_str.replace('+', '').strip())
+    
+    if '-' in age_range_str:
+        parts = age_range_str.split('-')
+        try:
+            low = int(parts[0].strip())
+            high = int(parts[1].strip())
+            return (low + high) / 2
+        except (IndexError, ValueError):
+            pass
+
+    # Fallback for single number (e.g., "10")
+    try:
+        return int(age_range_str.strip())
+    except ValueError:
+        return 30  # or raise, depending on your use case
+
 
 
 def is_admin():
@@ -175,7 +218,7 @@ class Register(Resource):
 
 
 @wish_space.route("/list", methods=["GET", "POST", "OPTIONS"])
-class Wishes(Resource):
+class getWishes(Resource):
     @wish_space.header("Authorization", "JWT Token", required=True)
     @wish_space.doc(
         summary="Get all wishes for the current user",
@@ -189,10 +232,22 @@ class Wishes(Resource):
     @jwt_required()
     def get(self):
         user_id = get_user_id_from_token()
+        user = User.query.filter_by(id=user_id).first()
         wishes = Wish.query.filter_by(user_id=user_id).all()
+        groups = {wish.wishgroup.name for wish in wishes}
+
+        recommendations = []
+        # getting recommendations based on user features for each group he is interested
+        for group in groups:
+            recommendations.append({group : get_recommendations(group, user)} );
+        
+        if not recommendations:
+            recommendations.append({"Default" : ["Gift Card", "Indoor Plant", "Smart Watch"] } );
+
         return {
             "success": "true",
-            "wishlist": [obj.to_dict() for obj in wishes]
+            "wishlist": [obj.to_dict() for obj in wishes],
+            "recommendations": recommendations
         }, 200
     
 @wish_space.route("/add", methods=["GET", "POST", "OPTIONS"])
@@ -241,7 +296,6 @@ class AddWish(Resource):
             group_id=data["wishgroup_id"],
             user_id=user_id
         )
-        logging.error(wish)
         db.session.add(wish)
         db.session.commit()
         return {"success": "true", "wish": wish.to_dict()}, 200

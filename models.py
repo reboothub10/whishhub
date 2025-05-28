@@ -10,7 +10,7 @@ class User(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(255), default="password")
-    industry = db.Column(db.String(100), nullable=True)
+    industry = db.Column(db.String(100), nullable=False)
 
     # Relationships
     wishes = db.relationship('Wish', back_populates='user')
@@ -21,7 +21,7 @@ class User(db.Model):
     )
 
     gender = db.Column(
-        db.Enum('male', 'female', 'non_binary', 'prefer_not_to_say', 'other', name='gender_enum'),
+        db.Enum('Male', 'Female', name='gender_enum'),
         default='female'
     )
 

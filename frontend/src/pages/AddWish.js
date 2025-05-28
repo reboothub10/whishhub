@@ -79,26 +79,9 @@ const AddWish = () => {
           <label>Category</label>
           <select name="wishgroup_id" onChange={(e) => setWishgroup(e.target.value)}>
               <option value="1">Default</option>
-              <option value="2">Birthday</option>
-              <option value="3">Birthday For Her</option>
-              <option value="4">Birthday For Him</option>
-              <option value="5">Anniversary</option>
-
-              <option value="6">Wedding</option>
-              <option value="7">Graduation</option>
-              <option value="8">Housewarming</option>
-              <option value="9">Baby Shower</option>
-              <option value="10">Christmas</option>
-
-              <option value="11">New Year</option>
-              <option value="12">Valentine Day</option>
-              <option value="13">Easter</option>
-              <option value="14">Thanksgiving</option>
-              <option value="15">Halloween</option>
-
-              <option value="16">Retirement</option>
-              <option value="17">Promotion</option>
-              <option value="18">Farewell</option>
+              <option value="2">Graduation</option>
+              <option value="3">Wedding</option>
+              <option value="4">Birthday</option>
           </select>
         </div>
         <div className="form-group">

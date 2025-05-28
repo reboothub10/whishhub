@@ -105,16 +105,22 @@ return errors;
         <div className="form-group">
           <label>Gender</label>
             <select name="gender" onChange={handleInputChange}>
-                <option value="male">Male</option>
-                <option value="female" selected>Female</option>
-                <option value="non_binary">Non Binary</option>
-                <option value="prefer_not_to_say">Prefer not to say</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female" selected>Female</option>
             </select>
         </div>
         <div className="form-group">
           <label>Industry</label>
             <select name="industry" onChange={handleInputChange}>
+                <option value="Finance">Finance</option>
+                <option value="Art">Art</option>
+                <option value="Retail">Retail</option>
+                <option value="Education">Education</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Tech">Tech</option>
+
+
+{/*             
                 <option value="IT">IT</option>
                 <option value="Finance">Finance</option>
                 <option value="Healthcare">Healthcare</option>
@@ -134,7 +140,7 @@ return errors;
                 <option value="Non-Profit">Non-Profit</option>
                 <option value="Transportation">Transportation</option>
                 <option value="Hospitality">Hospitality</option>
-                <option value="Real Estate">Real Estate</option>
+                <option value="Real Estate">Real Estate</option> */}
             </select>
         </div>
         <div className="form-group">

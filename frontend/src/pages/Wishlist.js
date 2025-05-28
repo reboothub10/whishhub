@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import api from "../config/api";
 import Header from "../components/Header";
+import RecommendationList from "../components/Recommendations";
 import {
   Box,
   Button,
@@ -21,13 +22,19 @@ import {
 function Wishlist() {
   const [userData, setUserData] = useState("");
   const [data, setWishData] = useState("");
+  const [recommendations, setRecommendations] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate=useNavigate();
   const isLoading = data === null;
 
   useEffect(() => {
     fetchUserDetails();
+    
   }, []);
+  const handleAddWish = (item) => {
+    alert(`Added: ${item}`);
+    // You could also update state or call an API here
+  };
   const fetchUserDetails = async () => {
     try {
       // Retrieve token from localStorage or other secure storage
@@ -72,6 +79,7 @@ function Wishlist() {
       if (wishresponse.data.success) {
         
         const data = {};
+        setRecommendations(wishresponse.data.recommendations || [])
         wishresponse.data.wishlist.forEach((wish) => {
           console.log(wish);
           const category = wish.wishgroup_name || "Uncategorized";
@@ -163,6 +171,13 @@ function Wishlist() {
                   </Grid>
                 ))}
               </Grid>
+
+                <div style={{ padding: 20 }}>
+                  <RecommendationList
+                    recommendations={recommendations}
+                    onAddWish={handleAddWish}
+                  />
+                </div>
             </>
           )}
         </Grid>
