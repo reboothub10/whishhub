@@ -1,2 +1,0 @@
-INSERT INTO wish_group (id, user_id, 'name') VALUES (1,0,'Default'), (2,0,'Birthday'), (3,0,'Birthday For Her'), (4,0,'Birthday For Him'), (5,0,'Anniversary'), (6,0,'Wedding'), (7,0,'Graduation'), (8,0,'Housewarming'), (9,0,'Baby Shower'), (10,0,'Christmas'), (11,0,'New Year'), (12,0,'Valentine Day'), (13,0,'Easter'), (14,0,'Thanksgiving'), (15,0,'Halloween'), (16,0,'Retirement'), (17,0,'Promotion'), (18,0,'Farewell');
-
