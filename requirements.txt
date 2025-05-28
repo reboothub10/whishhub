@@ -3,7 +3,7 @@ flask
 flask-jwt-extended
 flask-restx
 flask-sqlalchemy
-pyjwt
+pyjwt<2.10
 pandas
 scikit-learn
 numpy
