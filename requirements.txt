@@ -13,3 +13,4 @@ pandas
 matplotlib
 seaborn
 flask_cors
+mysql-connector-python-rf
