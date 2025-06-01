@@ -4,15 +4,22 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
+import os
 
-env = dotenv_values(".env")
+# env = dotenv_values(".env")
+# class Config:
+#     MYSQL_USERNAME = env["MYSQL_USERNAME"]
+#     MYSQL_PASSWORD = env["MYSQL_PASSWORD"]
+#     MYSQL_HOST = env["MYSQL_HOST"]
+#     MYSQL_PORT = env["MYSQL_PORT"]
+#     MYSQL_DB = env["MYSQL_DB"]
 
 class Config:
-    MYSQL_USERNAME = env["MYSQL_USERNAME"]
-    MYSQL_PASSWORD = env["MYSQL_PASSWORD"]
-    MYSQL_HOST = env["MYSQL_HOST"]
-    MYSQL_PORT = env["MYSQL_PORT"]
-    MYSQL_DB = env["MYSQL_DB"]
+    MYSQL_USERNAME = os.environ["MYSQL_USERNAME"]
+    MYSQL_PASSWORD = os.environ["MYSQL_PASSWORD"]
+    MYSQL_HOST = os.environ["MYSQL_HOST"]
+    MYSQL_PORT = os.environ["MYSQL_PORT"]
+    MYSQL_DB = os.environ["MYSQL_DB"]
 
 
 SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{Config.MYSQL_USERNAME}:{Config.MYSQL_PASSWORD}@" \
@@ -21,7 +28,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)  # Allow all domains on all routes (for development)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URL
-app.config['JWT_SECRET_KEY'] = env["JWT_SECRET_KEY"]
+app.config['JWT_SECRET_KEY'] = os.environ["JWT_SECRET_KEY"]
 description = (
     'Wishhub App is web application where each user can manage their personal wishlist and explore wishlists of other users'
     'Build with Flask REST API App with JWT Authentication and SQLAlchemy ORM '
